@@ -1,4 +1,4 @@
-# PathFinder - Resolvendo o Labirinto 2D com o Algoritmo A* (v2 - Com Extras)
+Resolvendo o Labirinto 2D com o Algoritmo A*
 
 ## Descrição do Projeto
 
