@@ -1,4 +1,4 @@
-Resolvendo o Labirinto 2D com o Algoritmo A*
+# Resolvendo o Labirinto 2D com o Algoritmo A*
 
 ## Descrição do Projeto
 
