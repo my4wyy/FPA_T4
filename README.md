@@ -230,12 +230,6 @@ S 1 0
 Nenhum caminho encontrado!
 ```
 
-## Validação e Desempenho
-
-| Tamanho | Tempo (ms) | Nós Explorados |
-|---------|------------|----------------|
-| 5x5     | 12         | 15             |
-| 10x10   | 45         | 60             | 
 
 
 ---
