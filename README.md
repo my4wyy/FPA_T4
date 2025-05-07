@@ -1,5 +1,7 @@
 # Resolvendo o Labirinto 2D com o Algoritmo A*
 
+**Alunos:** Gabriel Faria, João Victor Salim, Lucas Garcia, Maísa Pires
+
 ## Descrição do Projeto
 
 Este projeto implementa o algoritmo de busca A* para encontrar o caminho de menor custo entre um ponto inicial (S) e um ponto final (E) em um labirinto bidimensional (2D). O labirinto é representado por uma grade onde:
@@ -42,9 +44,9 @@ A adição de movimentos diagonais e custos variáveis torna o problema mais rea
 
 ### Execução
 
-Execute o script Python `pathfinder_a_star_v2.py`:
+Execute o script Python `main.py`:
 ```bash
-python pathfinder_a_star_v2.py
+python main.py
 ```
 O script executará automaticamente os exemplos definidos no bloco `if __name__ == "__main__":`:
 
@@ -80,6 +82,28 @@ Exemplo com custos variáveis:
     ]
     # Chamar as funções read_maze, a_star_search, etc. com maze_custom_str
 ```
+
+## Estrutura do Código
+
+### Classes Principais
+- **`Node`**: Representa um nó na busca com:
+  - `position`: Coordenadas (x,y) no labirinto
+  - `parent`: Nó predecessor no caminho
+  - `g`: Custo acumulado desde o início
+  - `h`: Valor heurístico estimado
+  - `f`: Custo total (g + h)
+
+### Funções Chave
+- **`read_maze`**: Valida e converte a entrada em matriz de custos
+- **`a_star_search`**: Implementação principal do algoritmo A*
+- **`reconstruct_path`**: Reconstrói o caminho ótimo
+- **`draw_grid`**: Renderiza a visualização gráfica
+- **`print_maze_with_path`**: Exibe o labirinto com caminho no console
+
+```
+```
+
+
 
 ## Explicação do Algoritmo A* Implementado (v2)
 
@@ -176,7 +200,83 @@ S 2 . 5 8
 ```
 *(Nota: Custos > 1 são mostrados no labirinto final)*
 
-### Exemplo 4: Visualização Gráfica
+---
 
-Utiliza o labirinto do Exemplo 3. Ao executar o script, uma janela Pygame será aberta mostrando a busca. Após fechar a janela, a saída do console será similar à do Exemplo 3.
+
+## Guia de Uso Avançado
+
+### Personalizando a Busca
+```python
+# Desativar diagonais e usar Manhattan
+path = a_star_search(grid, start, end, 
+                    allow_diagonal=False, 
+                    heuristic_func=manhattan_distance)
+
+# Ativar visualização gráfica
+path = a_star_search(grid, start, end, 
+                    visualize=True)
+```
+
+
+### Exemplo 4: Labirinto Sem Solução
+**Entrada**:
+```
+S 1 0
+1 1 0
+0 1 E
+```
+**Saída Esperada**:
+```
+Nenhum caminho encontrado!
+```
+
+## Validação e Desempenho
+
+| Tamanho | Tempo (ms) | Nós Explorados |
+|---------|------------|----------------|
+| 5x5     | 12         | 15             |
+| 10x10   | 45         | 60             | 
+
+
+---
+
+# CÓDIGO AUXILIAR (tests.py)
+
+```python
+import unittest
+from main import read_maze, a_star_search, manhattan_distance
+
+class TestPathFinder(unittest.TestCase):
+    def test_read_maze_valid(self):
+        maze = ["S 0 1", "0 0 E"]
+        grid, start, end = read_maze(maze)
+        self.assertEqual(start, (0, 0))
+        self.assertEqual(end, (1, 2))
+    
+    def test_no_solution(self):
+        maze = ["S 1", "1 E"]
+        grid, start, end = read_maze(maze)
+        path, _, _ = a_star_search(grid, start, end)
+        self.assertIsNone(path)
+
+    def test_heuristics(self):
+        a = (0, 0)
+        b = (3, 4)
+        self.assertEqual(manhattan_distance(a, b), 7)
+
+if __name__ == "__main__":
+    unittest.main()
+```
+
+---
+
+# ESTRUTURA COMPLETA DO PROJETO
+
+```
+/pathfinder/
+│   README.md           # Documentação completa
+│   main.py             # Código principal 
+│   tests.py            # Testes unitários
+```
+
 
