@@ -107,15 +107,76 @@ Exemplo com custos variáveis:
 
 ## Explicação do Algoritmo A* Implementado (v2)
 
-O algoritmo A* mantém a lógica central de explorar nós com base no custo `f(n) = g(n) + h(n)`.
+### **Funcionamento do Algoritmo A**
 
-**Principais Modificações e Recursos:**
+O algoritmo A* mantém a lógica central de explorar nós com base no custo **f(n) = g(n) + h(n)**, onde:
+- **g(n)**: Custo acumulado do caminho desde o nó inicial até o nó atual.
+- **h(n)**: Estimativa heurística do custo do nó atual até o destino.
+- **f(n)**: Custo total utilizado para priorizar a exploração dos nós.
 
-1.  **Movimentos:** O algoritmo agora considera 8 movimentos possíveis a partir de um nó: 4 ortogonais (custo do movimento = 1 * custo da célula) e 4 diagonais (custo do movimento = √2 * custo da célula).
-2.  **Custo `g(n)`:** O cálculo do custo acumulado `g` para chegar a um vizinho `m` a partir de `n` agora é: `tentative_g = g(n) + custo_movimento * custo_celula(m)`, onde `custo_movimento` é 1 (ortogonal) ou √2 (diagonal) e `custo_celula(m)` é o valor definido na grade para a célula `m`.
-3.  **Heurística `h(n)`:** Com movimentos diagonais permitidos, a **Distância Diagonal (ou Distância de Chebyshev)** `max(|x_atual - x_final|, |y_atual - y_final|)` é uma heurística admissível e mais informada que a de Manhattan. Ela é usada por padrão quando movimentos diagonais estão habilitados.
-4.  **Leitura do Labirinto:** A função `read_maze` agora interpreta números como custos das células, tratando `1` como obstáculo (custo `math.inf`) e `0` como custo `1`.
-5.  **Visualização (Pygame):** A função `a_star_search` possui um parâmetro `visualize=True` que ativa a interface gráfica. Ela desenha a grade, atualiza as cores das células conforme elas entram na Lista Aberta ou Fechada, e destaca o caminho final. A velocidade é controlada por `clock.tick()`.
+#### **Principais Modificações e Recursos:**
+1. **Movimentos:**
+   - O algoritmo considera **8 movimentos possíveis** a partir de um nó:
+     - **4 ortogonais** (cima, baixo, esquerda, direita) com custo de movimento = `1 * custo da célula`.
+     - **4 diagonais** com custo de movimento = `√2 * custo da célula`.
+   - Exemplo: Se o robô se move diagonalmente para uma célula com custo 2, o custo do movimento será `√2 * 2 ≈ 2.828`.
+
+2. **Cálculo do Custo g(n):**
+   - O custo acumulado para chegar a um vizinho `m` a partir do nó atual `n` é calculado como:
+     ```
+     tentative_g = g(n) + custo_movimento * custo_celula(m)
+     ```
+     - `custo_movimento`: `1` (movimento ortogonal) ou `√2` (movimento diagonal).
+     - `custo_celula(m)`: Valor definido na grade para a célula `m` (exemplo: 2 para terreno difícil).
+
+3. **Heurística h(n):**
+   - **Movimentos ortogonais:** Usa a **Distância de Manhattan**:
+     ```
+     h(n) = |x_atual – x_final| + |y_atual – y_final|
+     ```
+   - **Movimentos diagonais:** Usa a **Distância de Chebyshev** (mais precisa para diagonais):
+     ```
+     h(n) = max(|x_atual – x_final|, |y_atual – y_final|)
+     ```
+   - **Por que Chebyshev?**  
+     Essa heurística é **admissível** (nunca superestima o custo real) e **consistente**, garantindo que o A* encontre o caminho ótimo quando movimentos diagonais são permitidos.
+
+4. **Leitura do Labirinto:**
+   - A função `read_maze` interpreta:
+     - `S` como ponto inicial (custo 1).
+     - `E` como ponto final (custo 1).
+     - `1` como obstáculo (custo `math.inf`).
+     - Números `>= 0` como custos das células livres (exemplo: `2` para terreno difícil).
+
+5. **Visualização (Pygame):**
+   - Ativada com `visualize=True`, mostra em tempo real:
+     - **Cores:**
+       - Azul: Ponto inicial (`S`).
+       - Verde: Ponto final (`E`).
+       - Vermelho: Obstáculos.
+       - Ciano: Nós na lista aberta (em exploração).
+       - Magenta: Nós na lista fechada (já explorados).
+       - Amarelo: Caminho final encontrado.
+     - **Controle de velocidade:** Ajustado por `clock.tick(15)`.
+
+6. **Exemplo Numérico:**
+   - Suponha:
+     - Nó atual: `(1, 1)` com `g(n) = 2`.
+     - Destino: `(3, 3)`.
+     - Célula `(2, 2)` tem custo `3`.
+   - Cálculo para movimento diagonal:
+     ```
+     tentative_g = 2 + (√2 * 3) ≈ 2 + 4.242 = 6.242
+     h(n) = max(|3-1|, |3-1|) = 2
+     f(n) = 6.242 + 2 = 8.242
+     ```
+
+7. **Garantia de Otimalidade:**
+   - O A* sempre encontra o caminho mais curto se:
+     - A heurística for **admissível** (nunca superestima o custo real).
+     - A heurística for **consistente** (satisfaz a desigualdade triangular).
+
+---
 
 **Estrutura de Dados:**
 
@@ -127,7 +188,7 @@ O algoritmo A* mantém a lógica central de explorar nós com base no custo `f(n
 
 ## Exemplos de Entrada e Saída (v2)
 
-(Os exemplos são executados automaticamente ao rodar `pathfinder_a_star_v2.py`)
+(Os exemplos são executados automaticamente ao rodar `main.py`)
 
 ### Exemplo 1: Básico (Ortogonal, Custo Uniforme)
 
