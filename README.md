@@ -240,7 +240,7 @@ Nenhum caminho encontrado!
 
 ---
 
-# CÓDIGO AUXILIAR (tests.py)
+## Código Auxiliar (tests.py)
 
 ```python
 import unittest
@@ -270,7 +270,7 @@ if __name__ == "__main__":
 
 ---
 
-# ESTRUTURA COMPLETA DO PROJETO
+## Estrutura do projeto
 
 ```
 /pathfinder/
